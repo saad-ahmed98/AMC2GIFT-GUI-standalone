@@ -11,7 +11,11 @@ namespace AMC2GIFT_GUI
     {
         public ControllerGUI()
         {
+            
             InitializeComponent();
+            label3.Visible = false;
+            helpanalyse.Visible = false;
+            cacherLog();
             initConversionTab();
             initAnalyseTab();
             CenterToScreen();
@@ -37,9 +41,9 @@ namespace AMC2GIFT_GUI
             textBox3.ScrollBars = ScrollBars.Both;
             textBox3.WordWrap = false;
             label3.Text = "Comment utiliser :"
-                + Environment.NewLine + "Selectionner le format du fichier source à droite et son chemin,"
-                + Environment.NewLine + "ensuite choisir le format d'exportation et le dossier où sauvegarder le résultat." +
-                Environment.NewLine + "Finalement, cliquer sur le bouton central pour démarrer la conversion."
+                + Environment.NewLine + "1) Selectionner le format du fichier source à droite et son chemin,"
+                + Environment.NewLine + "2) Choisir le format d'exportation et le dossier où sauvegarder le résultat." +
+                Environment.NewLine + "3) Cliquer sur le bouton central pour démarrer la conversion."
                  +Environment.NewLine + "Le resultat s'entitulera \"resultatConversion\"";
         }
         private void initAnalyseTab()
@@ -51,8 +55,8 @@ namespace AMC2GIFT_GUI
             textBox4.ScrollBars = ScrollBars.Both;
             textBox4.WordWrap = false;
             helpanalyse.Text = "Comment utiliser :"
-                + Environment.NewLine + "Selectionner le format du fichier source à droite et son chemin,"
-                + Environment.NewLine + "ensuite, cliquer sur le bouton à droite pour démarrer l'analyse de syntaxe.";
+                + Environment.NewLine + "1) Selectionner le format du fichier source à droite et son chemin,"
+                + Environment.NewLine + "2) Cliquer sur le bouton à droite pour démarrer l'analyse de syntaxe.";
         }
 
         private void enableConversionButton()
@@ -119,7 +123,7 @@ namespace AMC2GIFT_GUI
                 String extension = ".txt";
                 if (exportformat.Equals("XMLMOODLE"))
                     extension = ".xml";
-                p.StartInfo.Arguments = "-c " + importformat + " " + textBox1.Text + " " + exportformat + " " + textBox2.Text + "\\resultatConversion" + extension;
+                p.StartInfo.Arguments = "-c " + importformat + " \"" + textBox1.Text + "\" " + exportformat + " \"" + textBox2.Text + "\\resultatConversion" + extension+"\"";
                 p.Start();
                 string output = p.StandardOutput.ReadToEnd();
                 p.WaitForExit();
@@ -146,7 +150,7 @@ namespace AMC2GIFT_GUI
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.RedirectStandardOutput = true;
                 p.StartInfo.FileName = "AMC2GIFT.exe";
-                p.StartInfo.Arguments = "-a " + analyseformat + " " + textBox6.Text;
+                p.StartInfo.Arguments = "-a " + analyseformat + " \"" + textBox6.Text+ "\"";
                 p.Start();
                 string output = p.StandardOutput.ReadToEnd();
                 p.WaitForExit();
@@ -154,6 +158,80 @@ namespace AMC2GIFT_GUI
                 MessageBox.Show("Analyse terminée!");
             }
             else MessageBox.Show("Erreur!\nFormat du fichier en entrée invalide!\nFormats txt et xml supportés uniquement.");
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+            if (label3.Visible)
+                label3.Visible = false;
+            else label3.Visible = true;
+        }
+
+        private void pictureBox4_Click(object sender, EventArgs e)
+        {
+            if (helpanalyse.Visible)
+                helpanalyse.Visible = false;
+            else helpanalyse.Visible = true;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (textBox3.Visible)
+            {
+                textBox3.Visible = false;
+                label2.Visible = false;
+                textBox4.Visible = false;
+                label5.Visible = false;
+                button4.Text = "Afficher Log";
+                button7.Text = "Afficher Log";
+                this.Height = 565;
+                tabControl1.Height = 390;
+            }
+            else
+            {
+                textBox3.Visible = true;
+                label2.Visible = true;
+                textBox4.Visible = true;
+                label5.Visible = true;
+                button4.Text = "Cacher Log";
+                button7.Text = "Cacher Log";
+                this.Height = 822;
+                tabControl1.Height = 641;
+            }
+        }
+
+        private void cacherLog() {
+            textBox3.Visible = false;
+            label2.Visible = false;
+            textBox4.Visible = false;
+            label5.Visible = false;
+            this.Height = 565;
+            tabControl1.Height = 390;
+        }
+        private void button7_Click(object sender, EventArgs e)
+        {
+            if (textBox3.Visible || textBox4.Visible)
+            {
+                textBox3.Visible = false;
+                label2.Visible = false;
+                textBox4.Visible = false;
+                label5.Visible = false;
+                button4.Text = "Afficher Log";
+                button7.Text = "Afficher Log";
+                this.Height = 565;
+                tabControl1.Height = 390;
+            }
+            else
+            {
+                textBox3.Visible = true;
+                label2.Visible = true;
+                textBox4.Visible = true;
+                label5.Visible = true;
+                button4.Text = "Cacher Log";
+                button7.Text = "Cacher Log";
+                this.Height = 822;
+                tabControl1.Height = 641;
+            }
         }
     }
 }
